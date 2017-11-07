@@ -15,3 +15,4 @@ from .models import *
 admin.site.register(Nominees)
 admin.site.register(Show)
 admin.site.register(LikeDislike)
+admin.site.register(UserGolos)

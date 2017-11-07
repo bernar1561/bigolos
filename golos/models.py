@@ -10,6 +10,14 @@ from django.utils.functional import cached_property
 class UserGolos(models.Model):
     key = models.CharField(verbose_name='отпечаток пальца', max_length=500)
 
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        ordering = ['key']
+
+    def __str__(self):
+        return self.key
+
 
 class LikeDislike(models.Model):
     LIKE = 1
@@ -21,7 +29,7 @@ class LikeDislike(models.Model):
     )
 
     vote = models.SmallIntegerField(verbose_name="Голос", choices=VOTES)
-    user = models.ForeignKey(UserGolos, verbose_name="Пользователь")
+    user = models.ForeignKey(UserGolos, verbose_name="голосующий")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
@@ -51,7 +59,7 @@ class Nominees(models.Model):
     title = models.CharField(verbose_name='имя номинанта', max_length=300)
     image = models.ImageField(verbose_name='изображение', upload_to="nominees/photos")
     show = models.ForeignKey(Show, verbose_name='название шоу')
-    votes = GenericRelation(LikeDislike, related_query_name='articles')
+    votes = GenericRelation(LikeDislike, related_query_name='nominees')
 
     class Meta:
         verbose_name = "Номинант"
