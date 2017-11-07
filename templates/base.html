@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    {% block meta %}{% endblock %}
+</head>
+<body>
+
+<!-- Header -->
+{% include 'includes/header.html' %}
+<!-- /Header -->
+
+{% block content %}{% endblock %}
+
+<!-- Footer -->
+ {% include 'includes/footer.html' %}
+<!-- /Footer -->
+<!-- JS -->
+ <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+{% block js %}{% endblock %}
+<!-- /JS -->
+
+
+
+</body>
+</html>
