@@ -20,7 +20,7 @@ from django.conf import settings
 from golos.views import IndexView
 
 urlpatterns = [
-    url(r'^', include('golos.urls', namespace='')),
+    url(r'^', include('golos.urls', namespace='golos')),
     url(r'^admin/', admin.site.urls),
     url(r'^', include('ajax.urls', namespace='ajax')),
 ] \

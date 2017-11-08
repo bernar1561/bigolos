@@ -22,35 +22,14 @@
     {% endfor %}
 {% endblock %}
 {% block js %}
-{#    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>#}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"></script>
+
+
+
 <script>
-
-</script>
-<script>
-
-{#    new Fingerprint2().get(function(result, components){#}
-{#        return result;#}
-{#    });#}
-{#    var key_a;#}
-{#    key_a = result;#}
-{#    console.log(key_a);#}
-
-    var info = {};
-
-    new Fingerprint2().get(function(result, components) {
-        info.fingerprint = result;
-        return info.fingerprint;
-
-    });
-
-
-
-
-
-
     // Получение переменной cookie по имени
     function getCookie(name) {
         var cookieValue = null;
@@ -76,21 +55,70 @@
     });
 
 
+    var info = {};
+
+    new Fingerprint2().get(function(result, components) {
+        info.fingerprint = result;
+        $(window).ready(function(){
+        var a = result;
+        console.log(a);
+       $.ajax({
+            url : "{% url 'golos:base_list' %}",
+            type : 'POST',
+            data : { 'username': a }
+            });
+        });
+        console.log(info);
+{#        return info.fingerprint;#}
+    });
+
+</script>
+
+
+
+
+<script>
+
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Настройка AJAX
+    $(function () {
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        });
+    });
+
+
+
+
     function like()
     {
-        var key_a = info.fingerprint;
         var like = $(this);
         var type = like.data('type');
         var pk = like.data('id');
         var action = like.data('action');
         var dislike = like.next();
-
-        console.log(key_a);
+        console.log(info.fingerprint);
 
         $.ajax({
             url : "/" + type + "/" + pk + "/" + 'like' + "/",
             type : 'POST',
-            data : { 'obj' : pk, 'key_b': info.fingerprint },
+            data : { 'obj' : pk },
 
 
             success : function (json) {

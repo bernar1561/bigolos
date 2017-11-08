@@ -4,19 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.functional import cached_property
-
-
-# Create your models here.
-class UserGolos(models.Model):
-    key = models.CharField(verbose_name='отпечаток пальца', max_length=500)
-
-    class Meta:
-        verbose_name = "Пользователь"
-        verbose_name_plural = "Пользователи"
-        ordering = ['key']
-
-    def __str__(self):
-        return self.key
+from django.contrib.auth.models import User
 
 
 class LikeDislike(models.Model):
@@ -29,7 +17,7 @@ class LikeDislike(models.Model):
     )
 
     vote = models.SmallIntegerField(verbose_name="Голос", choices=VOTES)
-    user = models.ForeignKey(UserGolos, verbose_name="голосующий")
+    user = models.ForeignKey(User, verbose_name="голосующий")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
@@ -69,16 +57,3 @@ class Nominees(models.Model):
     def __str__(self):
         return self.title
 
-
-# class Like(models.Model):
-#     show = models.ForeignKey(Show, verbose_name='название шоу')
-#     nominants = models.ForeignKey(Nominees, verbose_name='Номинанты')
-#     like = models.IntegerField(verbose_name='количество лайков', default=0, blank=True)
-#
-#     class Meta:
-#         verbose_name = "лайк"
-#         verbose_name_plural = "лайки"
-#         ordering = ['show']
-#
-#     def __str__(self):
-#         return '%s - %s' % (self.show.title, self.nominants.title)
