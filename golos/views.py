@@ -1,7 +1,7 @@
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 try:
     from django.utils import simplejson as json
 except ImportError:
@@ -16,23 +16,31 @@ from django.core.exceptions import ObjectDoesNotExist
 class IndexView(TemplateView):
     template_name = 'golos/main.html'
 
-    def post(self, request):
-        if request.method == 'POST':
-            kwargs = request.POST
-            if User.objects.all().filter(username=kwargs['username']).count() == 0:
-                user = User.objects.create(username=kwargs['username'], password=kwargs['username'])
-                user.save()
-                user = auth.authenticate(username=kwargs['username'], password=kwargs['username'])
-                auth.login(request, user)
-            else:
-                user = auth.authenticate(username=kwargs['username'], password=kwargs['username'])
-                auth.login(request, user)
-            return redirect('/')
-
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['shows'] = Show.objects.all()
         return context
+
+    def post(self, request):
+        if request.method == 'POST':
+            kwargs = request.POST
+            if User.objects.filter(username=kwargs['username']).count() == 0:
+                user = User.objects.create(username=kwargs['username'], password=243524352345245)
+                user.save()
+                user.set_password('Zhanalemi2017')
+                user.save()
+                user = auth.authenticate(username=kwargs['username'], password='Zhanalemi2017')
+                if user is not None:
+                    print(user)
+                    auth.login(request, user)
+                    return redirect('/')
+            else:
+                user = auth.authenticate(username=kwargs['username'], password='Zhanalemi2017')
+                auth.login(request, user)
+                if user is not None:
+                    print(user)
+                    auth.login(request, user)
+                    return redirect('/')
 
 
 class VotesView(View):
